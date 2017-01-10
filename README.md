@@ -24,3 +24,7 @@ Write a program that ask the oracle for word of the day. Also, when the oracle i
     Client: getting word of the day from Oracle
     Client: Oracle contacted, waiting for response... 
     Client: Quote by Oracle: "...."
+
+## Kata implementation
+
+https://jsfiddle.net/1z80ezau/
