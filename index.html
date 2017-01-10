@@ -1,0 +1,37 @@
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.js"></script>
+<input id="button" type="button" value="I want a quote, Oracle!" />
+
+<script>
+console.log("Client: program started");
+
+var button = $("#button");
+
+var listQuotes = [
+  "Se pilla antes a un cojo...", 
+  "A quien madruga...", 
+  "No les mires los dientes al...", 
+  "Mas vale tarde que...", 
+  "A buen entendedor..."
+];
+
+var quote = Rx.Observable.fromEvent(button, 'click');
+var stream = quote
+  .throttle(ev => Rx.Observable.interval(1000))
+  .map(x => console.log("Client: getting word of the day from Oracle"))
+  .delay(Math.random()*5000);
+
+var subscription = stream.subscribe(
+  function (next) {
+    var random = parseInt(Math.random() * 5);
+    console.log("Client: Quote by Oracle: " + listQuotes[random]);
+  },
+  function (error) {
+    console.log("error: " + error);
+  },
+  function () {
+    console.log("Client: waiting for a new request");
+    subscription.dispose();
+  }
+);
+</script>
