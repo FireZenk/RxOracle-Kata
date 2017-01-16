@@ -3,35 +3,32 @@
 <input id="button" type="button" value="I want a quote, Oracle!" />
 
 <script>
+
 console.log("Client: program started");
 
-var button = $("#button");
-
 var listQuotes = [
-  "Se pilla antes a un cojo...", 
+	"Se pilla antes a un cojo...", 
   "A quien madruga...", 
   "No les mires los dientes al...", 
   "Mas vale tarde que...", 
   "A buen entendedor..."
 ];
 
-var quote = Rx.Observable.fromEvent(button, 'click');
-var stream = quote
-  .throttle(ev => Rx.Observable.interval(1000))
-  .map(x => console.log("Client: getting word of the day from Oracle"))
-  .delay(Math.random()*5000);
+var thinkingSentence = "Client: Oracle contacted, waiting for response...";
+var thinkingDelay = Math.random()*7000; // 0 to 7 seconds
+
+var requestObservable = Rx.Observable.fromEvent($("#button"), 'click');
+var stream = requestObservable
+	.throttle(ev => Rx.Observable.interval(thinkingDelay))
+	.map(x => console.log("Client: Getting word of the day from Oracle"))
+  .delay(thinkingDelay);
 
 var subscription = stream.subscribe(
-  function (next) {
-    var random = parseInt(Math.random() * 5);
-    console.log("Client: Quote by Oracle: " + listQuotes[random]);
-  },
-  function (error) {
-    console.log("error: " + error);
-  },
-  function () {
-    console.log("Client: waiting for a new request");
-    subscription.dispose();
-  }
+	next => {
+  	var randomQuotePosition = parseInt(Math.random() * 5);
+  	console.log("Client: Quote by Oracle: " + listQuotes[randomQuotePosition]);
+	},
+  error => console.log("Error: " + error),
+  () => console.log("Completed: No more quotes for today!")
 );
 </script>
