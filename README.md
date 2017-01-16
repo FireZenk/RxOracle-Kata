@@ -27,4 +27,4 @@ Write a program that ask the oracle for word of the day. Also, when the oracle i
 
 ## Kata implementation
 
-https://jsfiddle.net/1z80ezau/1/
+https://jsfiddle.net/1z80ezau/2/
